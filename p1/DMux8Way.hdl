@@ -1,0 +1,46 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux8Way.hdl
+
+/**
+ * 8-way demultiplexor:
+ * {a, b, c, d, e, f, g, h} = {in, 0, 0, 0, 0, 0, 0, 0} if sel == 000
+ *                            {0, in, 0, 0, 0, 0, 0, 0} if sel == 001
+ *                            etc.
+ *                            {0, 0, 0, 0, 0, 0, 0, in} if sel == 111
+ */
+
+CHIP DMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+
+    PARTS:
+    Not(in=sel[0],out=not0);
+    Not(in=sel[1],out=not1);
+    Not(in=sel[2],out=not2);
+    And(a=not0,  b=not1,  out=wa1);
+    And(a=not2,  b=wa1,   out=wa2);
+    And(a=in,    b=wa2,   out=a);
+    And(a=sel[0],b=not1,  out=wb1);
+    And(a=not2,  b=wb1,   out=wb2);
+    And(a=in,    b=wb2,   out=b);
+    And(a=not0,  b=sel[1],out=wc1);
+    And(a=not2,  b=wc1,   out=wc2);
+    And(a=in,    b=wc2,   out=c);
+    And(a=sel[0],b=sel[1],out=wd1);
+    And(a=not2,  b=wd1,   out=wd2);
+    And(a=in,    b=wd2,   out=d);
+    And(a=not0,  b=not1,  out=we1);
+    And(a=sel[2],b=we1,   out=we2);
+    And(a=in,    b=we2,   out=e);
+    And(a=sel[0],b=not1,  out=wf1);
+    And(a=sel[2],b=wf1,   out=wf2);
+    And(a=in,    b=wf2,   out=f);
+    And(a=not0,  b=sel[1],out=wg1);
+    And(a=sel[2],b=wg1,   out=wg2);
+    And(a=in,    b=wg2,   out=g);
+    And(a=sel[0],b=sel[1],out=wh1);
+    And(a=sel[2],b=wh1,   out=wh2);
+    And(a=in,    b=wh2,   out=h);
+}
